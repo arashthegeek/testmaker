@@ -7,10 +7,10 @@ class IdCourse(models.Model):
     course = models.CharField(max_length=255)
     
     def __str__(self):
-        return f"{id}"
+        return f"{self.id}"
 
 class IdQuastion(models.Model):
-    id = models.CharField(max_length=8, primary_key=True)
+    id = models.IntegerField(primary_key=True)
     IdCoursef = models.ForeignKey(IdCourse,on_delete=models.CASCADE)
     Quastion = models.CharField(max_length=60)
     Option_a = models.CharField(max_length=50)
@@ -20,4 +20,4 @@ class IdQuastion(models.Model):
     Correct_Option = models.CharField(max_length=1)
     
     def __str__(self):
-        return f"{IdCoursef}"
+        return f"{self.IdCoursef}"

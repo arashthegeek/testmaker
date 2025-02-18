@@ -23,8 +23,9 @@ def mainpage(request):
             course_text += line + " "
         re.sub(r'[\u200c\u200b\u200d\u2060]', '', course_text)
         cid = models.IdCourse(id=id,course=course_text) #---save the course and cid(as key) into db---
+        cid.save()
         ai_quastion = """'"""+course_text+"""'
-از این متن سوالات چهارگزینه ای تولید کن(بدون توضیح اضافه) و به json تبدیل کن.
+از این متن سوالات چهارگزینه ای تولید کن و به json تبدیل کن.
 json به این فرم باشد:
 {
   "questions" : [
@@ -70,8 +71,12 @@ json به این فرم باشد:
             elif a == od:
                 ao = 'd'
             else:
-                pass #answer is invalid so break
+                continue
         
             #__---__ here add to models with cid as key
+            quastion_model = models.IdQuastion(IdCoursef=cid,Quastion=q,Option_a=oa,Option_b=ob,Option_c=oc,Option_d=od,Correct_Option=ao)
+            quastion_model.save()
+        
+        return HttpResponse(f"id: {id}")
         
     return render(request, 'mainpage.html')

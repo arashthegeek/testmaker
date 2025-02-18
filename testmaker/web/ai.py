@@ -17,7 +17,7 @@ def quastiontojson(quastion):
     ai_url = "https://huggingface.co/deepseek-ai/DeepSeek-R1"
     driver.get(ai_url)
 
-    cookie = {"name":"token","value":"nObSqlYIJPjHDYPrCFRHWWTukpDoOfLgbUVjVKomidbFRNOhthOyxyVCSlxhBLTIqtILVuyjIEYATmgkSTvnqcavIzjUlRSvEYykUbMyTkBGkPiLlJCkHWFtEziKhjfR","domain":"huggingface.co"}
+    cookie = {"name":"token","value":"LlueOlpNXiGsWrUkShthwiOIVLWvIyyIpvMRGQnCxivBLNBMZJlQUbFrAyyqWLIJhPjrZBsZRsSMCrswlFJSNACFVwnvVoUMGFgsqMLgYnsnnQvhpwdWIrajttintLQZ","domain":"huggingface.co"}
     driver.add_cookie(cookie)
 
     driver.refresh()
