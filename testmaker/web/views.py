@@ -25,16 +25,19 @@ def mainpage(request):
         cid = models.IdCourse(id=id,course=course_text) #---save the course and cid(as key) into db---
         cid.save()
         ai_quastion = """'"""+course_text+"""'
-از این متن سوالات چهارگزینه ای تولید کن و به json تبدیل کن.
+از این متن سوالات چهارگزینه ای تولید کن و به json تبدیل کن.(زیر 40 ثانیه)
 json به این فرم باشد:
 {
   "questions" : [
     {
-      "question": 
+      "question": text of quastion
       "options": [
-
+        option1,
+        option2,
+        option3,
+        option4,
       ],
-      "answer": 
+      "answer": text of correct option
     },
 }"""
         ai_quastion = ai_quastion.replace("\n"," ")
@@ -80,3 +83,68 @@ json به این فرم باشد:
         return HttpResponse(f"id: {id}")
         
     return render(request, 'mainpage.html')
+
+def exampage(request):
+    if request.method == "GET":
+        if 'id' in request.GET:
+            id = request.GET['id']
+            Idcourse = models.IdCourse.objects.get(id=id)
+            quastionobjectslist = models.IdQuastion.objects.filter(IdCoursef=Idcourse)
+            print(f"{quastionobjectslist}")
+            return render(request,'exam.html',{'qlist' : quastionobjectslist,'id':id})
+        else:
+            return render(request,'exampage.html')
+    if request.method == "POST":
+        course_id = request.POST['id']
+        q_a = []
+        for j in request.POST:
+            if j == "id" or j == "csrfmiddlewaretoken":
+                continue
+            j_id = ""
+            j_option = ""
+            bin_beforeunderscore = True
+            for x in list(j):
+                if x == "o":
+                    continue
+                if x == "_":
+                    bin_beforeunderscore = False
+                    continue
+                if bin_beforeunderscore:
+                    j_id += x
+                else:
+                    j_option += x
+            q_a.append([j_id,j_option])
+        
+        http__responses = []
+        for z in q_a:
+            q = models.IdQuastion.objects.get(id=int(z[0])) #object
+            correct_answer = q.Correct_Option #abcd
+            user_answer = z[1].replace(" ","") #abcd
+            question_text = q.Quastion #question?
+            Ccourse = q.IdCoursef.course
+            oa = q.Option_a #choice a
+            ob = q.Option_b #choice b
+            oc = q.Option_c #choice c
+            od = q.Option_d #choice d
+            Is_correct = False
+            if user_answer == correct_answer:#quastion? [options] your choice:x correct choice:y
+                Is_correct = True
+            http__responses.append(f"{question_text} / a){oa} / b){ob} / c){oc} / d){od} / your choice: {user_answer}; correct choice:{correct_answer};")
+        
+        base_res = ""
+        for k in http__responses:
+            base_res += k
+        
+        qtoai = f"""'{Ccourse}' (زیر 40 ثانیه جواب بده)از این درس این سوالات چهارگزینه ای را طرح کردم و کاربر این جواب هارا داده است با توجه به جواب های کاربر آن مباحثی از درس را که یاد نگرفته است را برایم بنویس. {base_res}"""
+        lines = qtoai.split('\r\n')
+        qtoai_text = ""
+        for line in lines:
+            qtoai_text += line + " "
+        re.sub(r'[\u200c\u200b\u200d\u2060]', '', qtoai_text)
+        qtoai_text = qtoai_text.replace("\n"," ")
+        
+        ai_res = ai.aichat(qtoai_text)
+        ai_res = ai_res.replace("<think>", "")
+        ai_res = ai_res.replace("</think>", "")
+        print(ai_res)
+        return render(request,'result.html',{'result':http__responses, 'ai_response':ai_res})

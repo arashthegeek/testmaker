@@ -1,0 +1,27 @@
+<form method="post">
+{% csrf_token %}
+<input type="text" readonly value="{{ id }}" name="id"/>
+{% for i in qlist %}
+<h2><bold>{{ i.Quastion }}</bold></h2>
+<br/>
+{{ i.Option_a }}
+<input type="radio" name="{{ i.id }}_oa"/>
+<br/>
+{{ i.Option_b }}
+<input type="radio" name="{{ i.id }}_ob"/>
+<br/>
+{{ i.Option_c }}
+<input type="radio" name="{{ i.id }}_oc"/>
+<br/>
+{{ i.Option_d }}
+<input type="radio" name="{{ i.id }}_od"/>
+<br/>
+
+{% endfor %}
+
+<input type="submit"/>
+<br/>
+<br/>
+*برای پردازش هوش مصنوعی ممکن است چند دقیقه طول بکشد*
+*لطفا صبور باشید*
+</form>
