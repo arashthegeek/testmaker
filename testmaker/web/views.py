@@ -5,6 +5,9 @@ import json
 import random
 from . import models
 
+def indexpage(request):
+    return render(request,'index.html')
+
 # Create your views here.
 def mainpage(request):
     if request.method == "POST":
@@ -42,9 +45,9 @@ json به این فرم باشد:
 }"""
         ai_quastion = ai_quastion.replace("\n"," ")
         #---
-        print(ai_quastion)
+        
         jstring = str(ai.quastiontojson(ai_quastion))
-        print(f"---json>> {jstring}")
+        
         
         data = json.loads(jstring)
 
@@ -56,15 +59,15 @@ json به این فرم باشد:
         for question in question_list:
             counter += 1
             q = question['question']
-            print(q)
+            
             o = question['options']
-            print(o)
+            
             oa = o[0]
             ob = o[1]
             oc = o[2]
             od = o[3]
             a = question['answer']
-            print(a)
+            
             if a == oa:
                 ao = 'a'
             elif a == ob:
@@ -80,7 +83,7 @@ json به این فرم باشد:
             quastion_model = models.IdQuastion(IdCoursef=cid,Quastion=q,Option_a=oa,Option_b=ob,Option_c=oc,Option_d=od,Correct_Option=ao)
             quastion_model.save()
         
-        return HttpResponse(f"id: {id}")
+        return HttpResponse(f"آیدی: {id}")
         
     return render(request, 'mainpage.html')
 
@@ -90,7 +93,7 @@ def exampage(request):
             id = request.GET['id']
             Idcourse = models.IdCourse.objects.get(id=id)
             quastionobjectslist = models.IdQuastion.objects.filter(IdCoursef=Idcourse)
-            print(f"{quastionobjectslist}")
+            
             return render(request,'exam.html',{'qlist' : quastionobjectslist,'id':id})
         else:
             return render(request,'exampage.html')
@@ -146,5 +149,5 @@ def exampage(request):
         ai_res = ai.aichat(qtoai_text)
         ai_res = ai_res.replace("<think>", "")
         ai_res = ai_res.replace("</think>", "")
-        print(ai_res)
+        
         return render(request,'result.html',{'result':http__responses, 'ai_response':ai_res})
