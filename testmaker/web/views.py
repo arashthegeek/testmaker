@@ -3,6 +3,7 @@ import re
 from . import ai
 import json
 import random
+from . import models
 
 # Create your views here.
 def mainpage(request):
@@ -21,6 +22,7 @@ def mainpage(request):
         for line in lines:
             course_text += line + " "
         re.sub(r'[\u200c\u200b\u200d\u2060]', '', course_text)
+        cid = models.IdCourse(id=id,course=course_text) #---save the course and cid(as key) into db---
         ai_quastion = """'"""+course_text+"""'
 از این متن سوالات چهارگزینه ای تولید کن(بدون توضیح اضافه) و به json تبدیل کن.
 json به این فرم باشد:
