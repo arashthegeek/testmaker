@@ -25,3 +25,9 @@
 ```bash
 git clone https://github.com/yourusername/quiz-platform.git
 cd quiz-platform
+
+
+⚠️ License Change Notice:
+This project was previously available under no license. 
+As of 2025-10-18, it has been relicensed under a proprietary license. 
+All rights reserved © 2025 Arash Shokri.
