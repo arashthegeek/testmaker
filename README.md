@@ -23,7 +23,7 @@
 ### 1. کلون کردن مخزن
 
 ```bash
-git clone https://github.com/yourusername/quiz-platform.git
+git clone https://github.com/arashthegeek/quiz-platform.git
 cd quiz-platform
 
 
