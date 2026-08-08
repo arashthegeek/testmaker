@@ -23,8 +23,8 @@
 ### 1. کلون کردن مخزن
 
 ```bash
-git clone https://github.com/arashthegeek/quiz-platform.git
-cd quiz-platform
+git clone 'https://github.com/arashthegeek/testmaker'
+cd testmaker
 
 
 ⚠️ License Change Notice:
